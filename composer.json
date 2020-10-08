@@ -1,0 +1,24 @@
+{
+    "name": "stagerightlabs/actions",
+    "description": "Action classes for handling discrete units of business logic.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ryan C. Durham",
+            "email": "ryan@stagerightlabs.com",
+            "homepage": "https://stagerightlabs.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "StageRightLabs\\Actions\\": "src"
+        }
+    },
+    "require": {
+        "php": "^7.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.4"
+    }
+}

@@ -26,7 +26,7 @@ abstract class Action
     protected $hasCompleted = false;
 
     /**
-     * The input keys used in the action that are not required.
+     * The input keys used in this action that are not required.
      *
      * @return array
      */
@@ -36,7 +36,7 @@ abstract class Action
     }
 
     /**
-     * The input keys used in the action that are not required.
+     * The input keys required by this action.
      *
      * @return array
      */

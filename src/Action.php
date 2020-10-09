@@ -109,6 +109,8 @@ abstract class Action
     }
 
     /**
+     * Has this action completed?
+     *
      * @return bool
      */
     public function completed()
@@ -117,6 +119,8 @@ abstract class Action
     }
 
     /**
+     * Has this action failed?
+     *
      * @return bool
      */
     public function failed()
@@ -125,69 +129,13 @@ abstract class Action
     }
 
     /**
+     * Retrieve the status message.
+     *
      * @return string
      */
     public function getMessage()
     {
         return $this->message;
-    }
-
-    /**
-     * Retrieve the payload.
-     *
-     * @return array
-     */
-    public function getPayload()
-    {
-        return $this->payload;
-    }
-
-    /**
-     * Retrieve an item from the payload.
-     *
-     * @return mixed
-     */
-    public function get($key)
-    {
-        if (!array_key_exists($key, $this->payload)) {
-            return;
-        }
-
-        return $this->payload[$key];
-    }
-
-    /**
-     * Add an item to the payload.
-     *
-     * @param string $key
-     * @param mixed $value
-     * @return void
-     */
-    public function set($key, $value)
-    {
-        $this->payload[$key] = $value;
-    }
-
-    /**
-     * An alias for the 'set' method
-     *
-     * @param string $key
-     * @param mixed $value
-     * @return void
-     */
-    protected function save($key, $value)
-    {
-        return $this->set($key, $value);
-    }
-
-    /**
-     * Does this action have a payload with contents?
-     *
-     * @return boolean
-     */
-    public function hasPayload()
-    {
-        return ! empty($this->payload);
     }
 
     /**
@@ -232,22 +180,20 @@ abstract class Action
     }
 
     /**
-     * Generate an array representation of this action.
+     * Generate a string representation of the action.
      *
-     * @return array
+     * @return string
      */
-    public function toArray()
+    public function __toString()
     {
-        return [
-            'completed' => $this->hasCompleted,
-            'name' => get_called_class(),
-            'message' => $this->message,
-            'payload' => $this->payload,
-        ];
-    }
+        if (!empty($this->message)) {
+            return $this->message;
+        }
 
-    public function toString()
-    {
+        if ($this->hasCompleted) {
+            return 'Action completed.';
+        }
 
+        return 'Action failed.';
     }
 }

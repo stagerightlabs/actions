@@ -82,19 +82,7 @@ class ActionTest extends TestCase
     {
         $action = PayloadExampleAction::execute();
 
-        $this->assertTrue($action->hasPayload());
-        $this->assertEquals(['foo' => 'bar'], $action->getPayload());
-        $this->assertEquals('bar', $action->get('foo'));
-    }
-
-    /** @test */
-    public function payload_items_can_be_added_ex_post_facto()
-    {
-        $action = PayloadExampleAction::execute();
-
-        $action->set('baz', 'bat');
-        $this->assertEquals(['foo' => 'bar', 'baz' => 'bat'], $action->getPayload());
-        $this->assertEquals('bat', $action->get('baz'));
+        $this->assertEquals('bar', $action->foo);
     }
 }
 
@@ -154,9 +142,11 @@ class RequiredInputExampleAction extends Action
 
 class PayloadExampleAction extends Action
 {
+    public $foo;
+
     public function handle($input = [])
     {
-        $this->save('foo', 'bar');
+        $this->foo = 'bar';
         return $this->complete();
     }
 }

@@ -1,0 +1,29 @@
+<?php
+
+namespace [namespace];
+
+use StageRightLabs\Actions\Action;
+
+class [class] extends Action
+{
+    /**
+     * Handle the action.
+     *
+     * @param Action|array $input
+     * @return self
+     */
+    public function handle($input = [])
+    {
+        return $this->complete('action complete');
+    }
+
+    /**
+     * The input keys required by this action.
+     *
+     * @return array
+     */
+    public function required()
+    {
+        return [];
+    }
+}

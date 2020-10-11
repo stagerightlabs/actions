@@ -66,7 +66,7 @@ abstract class Action
 
         if (!empty($extraneous)) {
             return $self
-                ->fail("Extraneous keys: " . implode(', ', $missing));
+                ->fail("Extraneous keys: " . implode(', ', $extraneous));
         }
 
         return $self->handle($input);

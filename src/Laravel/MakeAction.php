@@ -71,7 +71,7 @@ class MakeAction extends Command
     protected function getStub()
     {
         if (file_exists(base_path('stubs/action.stub'))) {
-            return file_get_contents(base_path('stubs/action.stub'));
+            $this->stub = file_get_contents(base_path('stubs/action.stub'));
         }
 
         $this->stub = file_get_contents(__DIR__ . '/stubs/action.stub');

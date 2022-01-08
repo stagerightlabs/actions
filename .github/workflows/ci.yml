@@ -1,45 +1,36 @@
-name: CI
+name: Tests
 
-on: [pull_request]
+on: [push, pull_request]
 
 jobs:
+    test:
+        runs-on: ${{ matrix.os }}
+        strategy:
+            fail-fast: true
+            matrix:
+                os: [ubuntu-latest, windows-latest]
+                php: [8.0, 8.1]
+                stability: [prefer-lowest, prefer-stable]
 
-  phpunit74:
-    runs-on: ubuntu-latest
-    container:
-      image: kirschbaumdevelopment/laravel-test-runner:7.4
+        name: P${{ matrix.php }} - ${{ matrix.stability }} - ${{ matrix.os }}
 
-    steps:
-      - uses: actions/checkout@v2
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
 
-      - name: Composer dependency cache
-        uses: "actions/cache@v2.0.0"
-        with:
-          path: "./vendor"
-          key: php-${{ hashFiles('composer.lock') }}
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php }}
+                  extensions: dom, curl, libxml, mbstring, bcmath, soap,
+                  coverage: none
 
-      - name: Install Dependencies
-        run: composer update --prefer-stable --prefer-dist --no-interaction
+            - name: Setup problem matchers
+              run: |
+                  echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+                  echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+            - name: Install dependencies
+              run: composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
-      - name: Run test suite
-        run: ./vendor/bin/phpunit
-
-  phpunit80:
-    runs-on: ubuntu-latest
-    container:
-      image: kirschbaumdevelopment/laravel-test-runner:8.0
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Composer dependency cache
-        uses: "actions/cache@v2.0.0"
-        with:
-          path: "./vendor"
-          key: php-${{ hashFiles('composer.lock') }}
-
-      - name: Install Dependencies
-        run: composer update --prefer-stable --prefer-dist --no-interaction
-
-      - name: Run test suite
-        run: ./vendor/bin/phpunit
+            - name: Execute tests
+              run: vendor/bin/phpunit

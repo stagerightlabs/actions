@@ -58,7 +58,7 @@ abstract class Action
 
         $missing = $self->missingInputKeys($input);
 
-        if (! empty($missing)) {
+        if (!empty($missing)) {
             return $self
                 ->fail("Missing expected keys: " . implode(', ', $missing));
         }
@@ -172,7 +172,7 @@ abstract class Action
         $expected = array_merge($this->required(), $this->optional());
 
         foreach ($array as $key => $_value) {
-            if (! in_array($key, $expected)) {
+            if (!in_array($key, $expected)) {
                 array_push($extraneous, $key);
             }
         }

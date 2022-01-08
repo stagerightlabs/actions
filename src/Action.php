@@ -54,7 +54,7 @@ abstract class Action
     public static function execute($input = [])
     {
         $isStatic = !(isset($this) && $this instanceof self);
-        $self = $isStatic ? new static : $this;
+        $self = $isStatic ? new static() : $this;
 
         $missing = $self->missingInputKeys($input);
 

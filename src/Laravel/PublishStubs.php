@@ -30,7 +30,7 @@ class PublishStubs extends Command
     {
         // Ensure the stubs directory is available.
         if (!is_dir($stubsPath = base_path('stubs'))) {
-            (new Filesystem)->makeDirectory($stubsPath);
+            (new Filesystem())->makeDirectory($stubsPath);
         }
 
         // Check to make sure the stub has not already been published.

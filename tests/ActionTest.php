@@ -8,9 +8,21 @@ use StageRightLabs\Actions\Action;
 class ActionTest extends TestCase
 {
     /** @test */
-    public function actions_can_execute_and_complete()
+    public function actions_can_be_called_statically()
     {
         $action = CompletingExampleAction::execute();
+
+        $this->assertInstanceOf(Action::class, $action);
+        $this->assertInstanceOf(CompletingExampleAction::class, $action);
+        $this->assertTrue($action->completed());
+        $this->assertFalse($action->failed());
+        $this->assertEquals(CompletingExampleAction::SUCCESS, $action->getMessage());
+    }
+
+    /** @test */
+    public function actions_can_be_called_in_an_object_context()
+    {
+        $action = (new CompletingExampleAction())->execute();
 
         $this->assertInstanceOf(Action::class, $action);
         $this->assertInstanceOf(CompletingExampleAction::class, $action);
@@ -68,6 +80,14 @@ class ActionTest extends TestCase
     }
 
     /** @test */
+    public function actions_will_fail_when_required_input_keys_are_missing_in_an_object_context()
+    {
+        $action = (new RequiredInputExampleAction())->execute();
+
+        $this->assertFalse($action->completed());
+    }
+
+    /** @test */
     public function actions_will_fail_when_unknown_input_keys_are_provided()
     {
         $action = OptionalInputExampleAction::execute([
@@ -88,7 +108,7 @@ class ActionTest extends TestCase
 
 class CompletingExampleAction extends Action
 {
-    const SUCCESS = 'the action has completed.';
+    public const SUCCESS = 'the action has completed.';
 
     public function handle($input = [])
     {
@@ -98,7 +118,7 @@ class CompletingExampleAction extends Action
 
 class FailingExampleAction extends Action
 {
-    const FAILURE = 'the action failed';
+    public const FAILURE = 'the action failed';
 
     public function handle($input = [])
     {

@@ -4,26 +4,6 @@ on: [pull_request]
 
 jobs:
 
-  phpunit73:
-    runs-on: ubuntu-latest
-    container:
-      image: kirschbaumdevelopment/laravel-test-runner:7.3
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Composer dependency cache
-        uses: "actions/cache@v2.0.0"
-        with:
-          path: "./vendor"
-          key: php-${{ hashFiles('composer.lock') }}
-
-      - name: Install Dependencies
-        run: composer install --no-scripts --no-ansi --no-suggest --no-progress
-
-      - name: Run test suite
-        run: ./vendor/bin/phpunit
-
   phpunit74:
     runs-on: ubuntu-latest
     container:
@@ -39,7 +19,7 @@ jobs:
           key: php-${{ hashFiles('composer.lock') }}
 
       - name: Install Dependencies
-        run: composer install --no-scripts --no-ansi --no-suggest --no-progress
+        run: composer update --prefer-stable --prefer-dist --no-interaction
 
       - name: Run test suite
         run: ./vendor/bin/phpunit
@@ -59,7 +39,7 @@ jobs:
           key: php-${{ hashFiles('composer.lock') }}
 
       - name: Install Dependencies
-        run: composer install --no-scripts --no-ansi --no-suggest --no-progress
+        run: composer update --prefer-stable --prefer-dist --no-interaction
 
       - name: Run test suite
         run: ./vendor/bin/phpunit

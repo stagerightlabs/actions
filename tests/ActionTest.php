@@ -22,7 +22,7 @@ class ActionTest extends TestCase
     /** @test */
     public function actions_can_be_called_in_an_object_context()
     {
-        $action = (new CompletingExampleAction())->execute();
+        $action = (new CompletingExampleAction())->run();
 
         $this->assertInstanceOf(Action::class, $action);
         $this->assertInstanceOf(CompletingExampleAction::class, $action);
@@ -82,7 +82,7 @@ class ActionTest extends TestCase
     /** @test */
     public function actions_will_fail_when_required_input_keys_are_missing_in_an_object_context()
     {
-        $action = (new RequiredInputExampleAction())->execute();
+        $action = (new RequiredInputExampleAction())->run();
 
         $this->assertFalse($action->completed());
     }

@@ -46,38 +46,46 @@ abstract class Action
     }
 
     /**
-     * Trigger the execution of this action.
+     * Trigger the execution of this action from a static context.
      *
      * @param array $input
-     * @return self
+     * @return static
      */
     public static function execute($input = [])
     {
-        $isStatic = !(isset($this) && $this instanceof self);
-        $self = $isStatic ? new static() : $this;
+        return (new static())->run($input);
+    }
 
-        $missing = $self->missingInputKeys($input);
+    /**
+     * Trigger the execution of this action from an object context.
+     *
+     * @param array $input
+     * @return static
+     */
+    public function run($input = [])
+    {
+        $missing = $this->missingInputKeys($input);
 
         if (!empty($missing)) {
-            return $self
+            return $this
                 ->fail("Missing expected keys: " . implode(', ', $missing));
         }
 
-        $extraneous = $self->extraneousInputKeys($input);
+        $extraneous = $this->extraneousInputKeys($input);
 
         if (!empty($extraneous)) {
-            return $self
+            return $this
                 ->fail("Extraneous keys: " . implode(', ', $extraneous));
         }
 
-        return $self->handle($input);
+        return $this->handle($input);
     }
 
     /**
      * Handle the action.
      *
      * @param Action|array $input
-     * @return self
+     * @return static
      */
     abstract public function handle($input = []);
 
@@ -85,7 +93,7 @@ abstract class Action
      * Flag this action as having completed.
      *
      * @param string $message
-     * @return self
+     * @return static
      */
     protected function complete($message = '')
     {
@@ -99,7 +107,7 @@ abstract class Action
      * Flag this action as having failed.
      *
      * @param string $message
-     * @return self
+     * @return static
      */
     protected function fail($message = '')
     {
@@ -114,7 +122,7 @@ abstract class Action
      *
      * @return bool
      */
-    public function completed()
+    public function completed(): bool
     {
         return $this->hasCompleted == true;
     }
@@ -124,7 +132,7 @@ abstract class Action
      *
      * @return bool
      */
-    public function failed()
+    public function failed(): bool
     {
         return $this->hasCompleted == false;
     }

@@ -2,6 +2,12 @@
 
 All notable changes to `stagerightlabs/actions` will be documented in this file
 
+## 0.00.41 - 2022-01-08
+
+### Added
+
+- I was hoping to be able to use the same `execute()` method to trigger actions both statically and from within an object context.  However, this turns out not to be practical.  Instead `execute()` will be used for static triggering, and a new `run()` method will be used to trigger instantiated action classes.
+
 ## 0.00.40 - 2022-01-07
 
 ### Changed

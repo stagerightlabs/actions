@@ -51,7 +51,7 @@ abstract class Action
      * @param array $input
      * @return static
      */
-    public static function execute($input = []): static
+    public static function execute($input = [])
     {
         return (new static())->run($input);
     }
@@ -62,7 +62,7 @@ abstract class Action
      * @param array $input
      * @return static
      */
-    public function run($input = []): static
+    public function run($input = [])
     {
         $missing = $this->missingInputKeys($input);
 
@@ -95,7 +95,7 @@ abstract class Action
      * @param string $message
      * @return static
      */
-    protected function complete($message = ''): static
+    protected function complete($message = '')
     {
         $this->hasCompleted = true;
         $this->message = $message;
@@ -109,7 +109,7 @@ abstract class Action
      * @param string $message
      * @return static
      */
-    protected function fail($message = ''): static
+    protected function fail($message = '')
     {
         $this->hasCompleted = false;
         $this->message = $message;
@@ -142,7 +142,7 @@ abstract class Action
      *
      * @return string
      */
-    public function getMessage(): string
+    public function getMessage()
     {
         return $this->message;
     }
@@ -154,7 +154,7 @@ abstract class Action
      * @param array|string $keys
      * @return array
      */
-    protected function missingInputKeys($array): array
+    protected function missingInputKeys($array)
     {
         $missing = [];
 
@@ -174,7 +174,7 @@ abstract class Action
      * @param array|string $keys
      * @return array
      */
-    protected function extraneousInputKeys($array): array
+    protected function extraneousInputKeys($array)
     {
         $extraneous = [];
         $expected = array_merge($this->required(), $this->optional());
@@ -193,7 +193,7 @@ abstract class Action
      *
      * @return string
      */
-    public function __toString(): string
+    public function __toString()
     {
         if (!empty($this->message)) {
             return $this->message;

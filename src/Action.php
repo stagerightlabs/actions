@@ -85,7 +85,7 @@ abstract class Action
      * Handle the action.
      *
      * @param Action|array $input
-     * @return self
+     * @return static
      */
     abstract public function handle($input = []);
 
@@ -93,9 +93,9 @@ abstract class Action
      * Flag this action as having completed.
      *
      * @param string $message
-     * @return self
+     * @return static
      */
-    protected function complete($message = '')
+    protected function complete($message = ''): static
     {
         $this->hasCompleted = true;
         $this->message = $message;
@@ -107,9 +107,9 @@ abstract class Action
      * Flag this action as having failed.
      *
      * @param string $message
-     * @return self
+     * @return static
      */
-    protected function fail($message = '')
+    protected function fail($message = ''): static
     {
         $this->hasCompleted = false;
         $this->message = $message;
@@ -122,7 +122,7 @@ abstract class Action
      *
      * @return bool
      */
-    public function completed()
+    public function completed(): bool
     {
         return $this->hasCompleted == true;
     }
@@ -132,7 +132,7 @@ abstract class Action
      *
      * @return bool
      */
-    public function failed()
+    public function failed(): bool
     {
         return $this->hasCompleted == false;
     }
@@ -142,7 +142,7 @@ abstract class Action
      *
      * @return string
      */
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->message;
     }
@@ -154,7 +154,7 @@ abstract class Action
      * @param array|string $keys
      * @return array
      */
-    protected function missingInputKeys($array)
+    protected function missingInputKeys($array): array
     {
         $missing = [];
 
@@ -174,7 +174,7 @@ abstract class Action
      * @param array|string $keys
      * @return array
      */
-    protected function extraneousInputKeys($array)
+    protected function extraneousInputKeys($array): array
     {
         $extraneous = [];
         $expected = array_merge($this->required(), $this->optional());
@@ -193,7 +193,7 @@ abstract class Action
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         if (!empty($this->message)) {
             return $this->message;

@@ -46,31 +46,39 @@ abstract class Action
     }
 
     /**
-     * Trigger the execution of this action.
+     * Trigger the execution of this action from a static context.
      *
      * @param array $input
-     * @return self
+     * @return static
      */
-    public static function execute($input = [])
+    public static function execute($input = []): static
     {
-        $isStatic = !(isset($this) && $this instanceof self);
-        $self = $isStatic ? new static() : $this;
+        return (new static())->run($input);
+    }
 
-        $missing = $self->missingInputKeys($input);
+    /**
+     * Trigger the execution of this action from an object context.
+     *
+     * @param array $input
+     * @return static
+     */
+    public function run($input = []): static
+    {
+        $missing = $this->missingInputKeys($input);
 
         if (!empty($missing)) {
-            return $self
+            return $this
                 ->fail("Missing expected keys: " . implode(', ', $missing));
         }
 
-        $extraneous = $self->extraneousInputKeys($input);
+        $extraneous = $this->extraneousInputKeys($input);
 
         if (!empty($extraneous)) {
-            return $self
+            return $this
                 ->fail("Extraneous keys: " . implode(', ', $extraneous));
         }
 
-        return $self->handle($input);
+        return $this->handle($input);
     }
 
     /**
